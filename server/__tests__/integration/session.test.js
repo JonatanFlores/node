@@ -20,6 +20,22 @@ describe("Route POST  /sessions", () => {
     expect(response.status).toBe(200);
   });
 
+  it("should not authenticate with inexisting user email", async () => {
+    await factory.create("User", {
+      email: "johndoe@gmail.com",
+      password: "123456"
+    });
+
+    const response = await request(app)
+      .post("/sessions?tenantId=test")
+      .send({
+        email: "janedoe@gmail.com",
+        password: "123456"
+      });
+
+    expect(response.status).toBe(401);
+  });
+
   it("should not authenticate with invalid credentials", async () => {
     const user = await factory.create("User", {
       password: "123123"

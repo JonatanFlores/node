@@ -1,8 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
+const compress = require("compression");
+const helmet = require("helmet");
+const cors = require("cors");
 const Knex = require("knex");
 const tenants = require(`./config/tenants.js`);
+const logger = require("./logger");
 
 class Application {
   constructor() {
@@ -74,6 +78,10 @@ class Application {
   }
 
   middlewares() {
+    // Enable security, CORS, compression, favicon and body parsing
+    this.express.use(helmet());
+    this.express.use(cors());
+    this.express.use(compress());
     this.express.use(express.json());
   }
 

@@ -8,6 +8,8 @@ const config = knexfile[env];
 const knex = Knex(config);
 const models = {};
 
+models.knex = knex;
+
 if (knex) {
   Model.knex(knex);
 

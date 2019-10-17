@@ -1,5 +1,4 @@
-const bcrypt = require("bcryptjs");
-
+const crypto = require("crypto");
 const { knex, User } = require("../models");
 const truncate = require("../utils/truncate");
 
@@ -7,15 +6,18 @@ beforeEach(async () => await truncate());
 
 describe("User", () => {
   it("should encrypt user password", async () => {
+    const rawPassword = "123456";
     const user = await User.query().insert({
       email: "jonatafloress@gmail.com",
-      password: "123456"
+      password: rawPassword
     });
 
-    // const compareHash = await bcrypt.compare("123456", user.password_hash);
-    // expect(compareHash).toBe(true);
+    const passwordHashed = crypto
+      .createHash("md5")
+      .update(rawPassword)
+      .digest("hex");
 
-    expect(user.password).toBe("123456");
+    expect(user.password).toBe(passwordHashed);
   });
 });
 

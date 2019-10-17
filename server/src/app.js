@@ -6,7 +6,6 @@ const helmet = require("helmet");
 const cors = require("cors");
 const Knex = require("knex");
 const tenants = require(`./config/tenants.js`);
-const logger = require("./logger");
 
 class Application {
   constructor() {
@@ -35,6 +34,7 @@ class Application {
           });
       }
 
+      models.knex = knex;
       req.models = models;
 
       next();
@@ -63,8 +63,8 @@ class Application {
       const { datasource } = tenants[tenantId];
 
       const connection = {
-        ...datasource.connection,
-        ...shared.datasource.connection
+        ...shared.datasource.connection,
+        ...datasource.connection
       };
 
       const credentials = {

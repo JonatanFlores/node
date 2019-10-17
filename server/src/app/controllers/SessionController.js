@@ -2,13 +2,23 @@ class SessionController {
   async store(req, res) {
     try {
       const { User } = req.models;
-      const user = await User.query().insert({
-        email: "janedoe@gmail.com",
-        senha: "4321"
+      const { email, password } = req.body;
+      const user = await User.query().findOne({ email });
+
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      if (!user.checkPassword(password)) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      res.status(200).json({
+        name: user.name,
+        email: user.email,
+        token: user.generateToken()
       });
-      return res.json({ message: "/sessions route works", user });
     } catch (err) {
-      console.log(err);
       return res.sendStatus(500);
     }
   }

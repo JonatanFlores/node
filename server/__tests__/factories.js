@@ -1,9 +1,11 @@
 const faker = require("faker");
 const { factory } = require("factory-girl");
-const { User } = require("../src/app/models");
+const ObjectionAdapter = require("factory-girl-objection-adapter");
+const { User } = require("./models");
+
+factory.setAdapter(new ObjectionAdapter());
 
 factory.define("User", User, {
-  name: faker.name.findName(),
   email: faker.internet.email(),
   password: faker.internet.password()
 });

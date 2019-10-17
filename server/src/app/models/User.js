@@ -1,5 +1,7 @@
 const crypto = require("crypto");
 const { Model } = require("objection");
+const jwt = require("jsonwebtoken");
+const config = require("../../config/config");
 
 class User extends Model {
   static get tableName() {
@@ -8,11 +10,23 @@ class User extends Model {
 
   async $beforeInsert(queryContext) {
     await super.$beforeInsert(queryContext);
+    this.password = this.generateHash(this.password);
+  }
 
-    this.password = crypto
+  generateHash(text) {
+    return crypto
       .createHash("md5")
-      .update(this.password)
+      .update(text.toString())
       .digest("hex");
+  }
+
+  checkPassword(password) {
+    const hashedPassword = this.generateHash(password);
+    return this.password === hashedPassword;
+  }
+
+  generateToken() {
+    return jwt.sign({ id: this.id }, config.jwtSecret);
   }
 }
 

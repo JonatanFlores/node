@@ -1,0 +1,7 @@
+node_modules
+.env
+test.db
+/knexfile/*
+!/knexfile/*.sample
+/src/config/*
+!/src/config/*.sample

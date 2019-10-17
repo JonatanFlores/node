@@ -1,0 +1,24 @@
+const env = process.env.NODE_ENV || "development";
+const knexsource = require("../../knexfile")[env];
+
+module.exports = {
+  shared: {
+    datasource: {
+      ...knexsource
+    }
+  },
+  tenant01: {
+    datasource: {
+      connection: {
+        database: ""
+      }
+    }
+  },
+  tenant02: {
+    datasource: {
+      connection: {
+        database: ""
+      }
+    }
+  }
+};

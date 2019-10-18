@@ -5,12 +5,19 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/server.js",
+    "prod:start": "cross-env NODE_ENV=production PORT=8080 pm2 start src/server.js --name erp",
+    "prod:restart": "cross-env NODE_ENV=production PORT=8080 pm2 restart src/server.js --name erp",
+    "prod:stop": "cross-env NODE_ENV=production PORT=8080 pm2 stop src/server.js --name erp",
+    "prod:delete": "cross-env NODE_ENV=production PORT=8080 pm2 delete src/server.js --name erp",
     "start": "cross-env NODE_ENV=production node src/server.js",
     "pretest": "cross-env NODE_ENV=test knex migrate:latest --knexfile knexfile",
     "test": "cross-env NODE_ENV=test jest",
     "posttest": "cross-env NODE_ENV=test knex migrate:rollback --knexfile knexfile"
   },
-  "keywords": [],
+  "keywords": [
+    "ERP",
+    "API"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
